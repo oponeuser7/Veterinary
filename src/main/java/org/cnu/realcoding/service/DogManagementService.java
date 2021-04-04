@@ -1,15 +1,12 @@
 package org.cnu.realcoding.service;
 
-import lombok.Getter;
-import org.cnu.realcoding.controller.DogController;
 import org.cnu.realcoding.domain.Dog;
+import org.cnu.realcoding.exception.DogAlreadyExistsException;
 import org.cnu.realcoding.exception.DogNotFoundException;
 import org.cnu.realcoding.repository.DogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class DogManagementService {
@@ -17,27 +14,23 @@ public class DogManagementService {
     @Autowired
     private DogRepository dogRepository;
 
-    public List<Dog> getNameDogs(String name) {
-       String name = dogRepository.
-
-    }
-
     public void insertDog(Dog dog) {
-        dogRepository.postDogs(dog);
-    }
-
-    public Dog getDogByName(String name) {
-        for (Dog dog : dogs) {
-            if (dog.getName().equals(name)) {
-                return dog;
-            }
+        if(dogRepository.check_Exist(dog)){
+            System.out.println("이미 존재하는 강아지입니다.");
+            throw new DogAlreadyExistsException();
+        }else{
+            dogRepository.postDogs(dog);
         }
-
-        throw new DogNotFoundException();
     }
 
-
-
-
+    public Dog getDogByAllKey(Dog dog){
+        Dog mongo_dog = dogRepository.getDogByAllKey(dog);
+        if(mongo_dog != null) {
+            return mongo_dog;
+        }else {
+            System.out.println("존재하지 않는 강아지입니다. ");
+            throw new DogNotFoundException();
+        }
+    }
 
 }

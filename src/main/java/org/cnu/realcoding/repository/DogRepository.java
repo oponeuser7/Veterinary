@@ -7,10 +7,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import lombok.Data;
-
-import java.util.List;
-
 @Repository
 public class DogRepository {
     
@@ -19,27 +15,18 @@ public class DogRepository {
 
 
     public void postDogs(Dog dog) {
-        if(check_exist(dog) == null) {
-            mongoTemplate.insert(dog);
-        }else{
-            System.out.println("이미 존재하는 강아지 입니다.");
-        }
+        mongoTemplate.insert(dog);
     }
 
-    public Dog check_exist(Dog dog){
+    public boolean check_Exist(Dog dog){
         Criteria criteria = new Criteria("name");
         criteria.is(dog.getName()).and("ownerName").is(dog.getOwnerName())
                 .and("ownerPhoneNumber").is(dog.getOwnerPhoneNumber());
         Query query = new Query(criteria);
-        Dog mongo_dog = mongoTemplate.findOne(query, Dog.class);
-        if( mongo_dog== null){
-            return null;
-        }else {
-            return mongo_dog;
-        }
+        return mongoTemplate.exists(query, Dog.class);
     }
 
-    public Dog getDogByKey(Dog dog) {
+    public Dog getDogByAllKey(Dog dog) {
         Criteria criteria = new Criteria("name");
         criteria.is(dog.getName()).and("ownerName").is(dog.getOwnerName())
                 .and("ownerPhoneNumber").is(dog.getOwnerPhoneNumber());
