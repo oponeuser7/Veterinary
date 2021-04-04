@@ -13,12 +13,12 @@ public class DogController {
     @Autowired
     private DogManagementService dogManagementService;
 
-    @GetMapping("/dogs")
+    @GetMapping("/dogs/{ownerName}")
     public List<Dog> getDogByOwnerCNTR(@PathVariable String ownerName) {
         return dogManagementService.getDogByOwnerSRVC(ownerName);
     }
 
-    @PutMapping
+    @PutMapping("/dogs")
     public void putDogCNTR(@RequestBody Dog dog) {
         dogManagementService.putDogSRVC(dog);
     }
@@ -35,16 +35,16 @@ public class DogController {
         return dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber);
     }
 
-    @GetMapping("/dogs/{ownerPhoneNumber}")
-    public Dog getDogByPhoneNum(@PathVariable String PhoneNum) {
+    @GetMapping
+    public Dog getDogByPhoneNum(@RequestParam String PhoneNum) {
         return dogManagementService.getDogByPhoneNum(PhoneNum);
     }
 
-    @PatchMapping("/dogs/{name}/{ownerName}/{ownerPhoneNumber}/{medicalRecord}")
-    public void addMedicalRecord(@PathVariable String name,
-                                 @PathVariable String ownerName,
-                                 @PathVariable String ownerPhoneNumber,
-                                 @PathVariable String medicalRecord) {
+    @PatchMapping
+    public void addMedicalRecord(@RequestParam String name,
+                                 @RequestParam String ownerName,
+                                 @RequestParam String ownerPhoneNumber,
+                                 @RequestParam String medicalRecord) {
         dogManagementService.addMedicalRecord(dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber), medicalRecord);
     }
 

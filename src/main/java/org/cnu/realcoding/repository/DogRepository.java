@@ -78,10 +78,10 @@ public class DogRepository {
     }
 
     public void putDogRPST(Dog d) {
-        Criteria crt = new Criteria("name").is(d.getName())
+        Criteria criteria = new Criteria("name").is(d.getName())
                 .and("ownerName").is(d.getOwnerName())
                 .and("ownerPhoneNumber").is(d.getOwnerPhoneNumber());
-        Query query = new Query(crt);
+        Query query = new Query(criteria);
         mongoTemplate.remove(query, Dog.class);
         mongoTemplate.insert(d);
     }
