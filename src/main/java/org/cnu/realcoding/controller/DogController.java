@@ -28,7 +28,7 @@ public class DogController {
         dogManagementService.insertDog(dog);
     }
 
-    @GetMapping("dogs{name}/{ownerName}/{ownerPhoneNumber}")
+    @GetMapping("dogs/{name}/{ownerName}/{ownerPhoneNumber}")
     public Dog getDogByAllKey(@PathVariable String name,
                               @PathVariable String ownerName,
                               @PathVariable String ownerPhoneNumber){
