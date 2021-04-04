@@ -17,27 +17,10 @@ public class DogRepository {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-
-    public void postDogs(Dog dog) {
-        if(check_exist(getDogByKey(dog))) {
-            mongoTemplate.insert(dog);
-        }
-    }
-
-    public Dog getDogByKey(Dog dog) {
-        Criteria criteria = new Criteria("name");
-        criteria.is(dog.getName()).and("ownerName").is(dog.getOwnerName())
-                .and("ownerPhoneNumber").is(dog.getOwnerPhoneNumber());
-        Query query = new Query(criteria);
-
-        return mongoTemplate.findOne(query, Dog.class);
-    }
-
-    public boolean check_exist(Dog dog){
-        if(dog == null){
-            return false;
-        }else {
-            return true;
-        }
+    public List<Dog> getDogByOwnerRPST(String ownerName) {
+        Criteria ctr = new Criteria("ownerName");
+        ctr.is(ownerName);
+        Query query = new Query(ctr);
+        return mongoTemplate.find(query, Dog.class);
     }
 }
