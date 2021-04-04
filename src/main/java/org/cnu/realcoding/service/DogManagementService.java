@@ -18,8 +18,8 @@ public class DogManagementService {
     private DogRepository dogRepository;
 
     public List<Dog> getNameDogs(String name) {
-        dogs.contains(name);
-        return dogs;
+       String name = dogRepository.
+
     }
 
     public void insertDog(Dog dog) {

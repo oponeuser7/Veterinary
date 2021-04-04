@@ -19,8 +19,23 @@ public class DogRepository {
 
 
     public void postDogs(Dog dog) {
-        if(check_exist(getDogByKey(dog))) {
+        if(check_exist(dog) == null) {
             mongoTemplate.insert(dog);
+        }else{
+            System.out.println("이미 존재하는 강아지 입니다.");
+        }
+    }
+
+    public Dog check_exist(Dog dog){
+        Criteria criteria = new Criteria("name");
+        criteria.is(dog.getName()).and("ownerName").is(dog.getOwnerName())
+                .and("ownerPhoneNumber").is(dog.getOwnerPhoneNumber());
+        Query query = new Query(criteria);
+        Dog mongo_dog = mongoTemplate.findOne(query, Dog.class);
+        if( mongo_dog== null){
+            return null;
+        }else {
+            return mongo_dog;
         }
     }
 
@@ -33,11 +48,4 @@ public class DogRepository {
         return mongoTemplate.findOne(query, Dog.class);
     }
 
-    public boolean check_exist(Dog dog){
-        if(dog == null){
-            return false;
-        }else {
-            return true;
-        }
-    }
 }
