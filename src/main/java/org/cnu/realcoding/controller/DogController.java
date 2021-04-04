@@ -22,4 +22,18 @@ public class DogController {
     public void putDogCNTR(@RequestBody Dog dog) {
         dogManagementService.putDogSRVC(dog);
     }
+
+    @PostMapping("/dogs")
+    public void creatDogs(@RequestBody Dog dog) {
+        dogManagementService.insertDog(dog);
+    }
+
+    @GetMapping("dogs{name}/{ownerName}/{ownerPhoneNumber}")
+    public Dog getDogByAllKey(@PathVariable String name,
+                              @PathVariable String ownerName,
+                              @PathVariable String ownerPhoneNumber){
+        return dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber);
+    }
+
 }
+
