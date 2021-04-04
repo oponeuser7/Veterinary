@@ -6,7 +6,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class DogRepository {
@@ -15,9 +18,9 @@ public class DogRepository {
     private MongoTemplate mongoTemplate;
 
     public Dog getDogByPhoneNum(String phoneNum) {
-        Criteria ctr = new Criteria("ownerPhoneNumber");
-        ctr.is(phoneNum);
-        Query q = new Query(ctr);
+        Criteria criteria = new Criteria("ownerPhoneNumber");
+        criteria.is(phoneNum);
+        Query q = new Query(criteria);
         return mongoTemplate.findOne(q, Dog.class);
     }
 
@@ -25,10 +28,20 @@ public class DogRepository {
         mongoTemplate.insert(dog);
     }
 
-    public boolean check_Exist(Dog dog){
+    public void addMedicalRecord(Dog dog, List<String> medicalRecord) {
         Criteria criteria = new Criteria("name");
         criteria.is(dog.getName()).and("ownerName").is(dog.getOwnerName())
                 .and("ownerPhoneNumber").is(dog.getOwnerPhoneNumber());
+        Query query = new Query(criteria);
+        Update update = new Update();
+        update.set("medicalRecords", medicalRecord);
+        mongoTemplate.updateFirst(query, update, Dog.class);
+    }
+
+    public boolean check_Exist(String name, String ownerName, String ownerPhoneNumber) {
+        Criteria criteria = new Criteria("name");
+        criteria.is(name).and("ownerName").is(ownerName)
+                .and("ownerPhoneNumber").is(ownerPhoneNumber);
         Query query = new Query(criteria);
         return mongoTemplate.exists(query, Dog.class);
     }
@@ -41,5 +54,4 @@ public class DogRepository {
 
         return mongoTemplate.findOne(query, Dog.class);
     }
-
 }
