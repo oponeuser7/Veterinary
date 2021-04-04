@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Dog {
     private String name;
-    private String kine;
+    private String kind;
     private String ownerName;
     private String ownerPhoneNumber;
     private List<String> medicalRecords;

@@ -54,12 +54,12 @@ public class DogRepository {
     }
 
     // 견종 변경
-    public void updateDogKind(Dog dog, String changeKind){
+    public void updateDogKind(String name, String ownerName, String ownerPhoneNumber, String changeKind){
         Criteria criteria = new Criteria("name");
-        criteria.is(dog.getName());
+        criteria.is(name).and("ownerName").is(ownerName).and("ownerPhoneNumber").is(ownerPhoneNumber);
         Query q = new Query(criteria);
         Update update = new Update();
-        update.set("Kind", dog.getKine());
-        mongoTemplate.updateFirst(q, update, changeKind);
+        update.set("Kind", changeKind);
+        mongoTemplate.updateFirst(q, update, Dog.class);
     }
 }

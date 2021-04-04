@@ -31,9 +31,9 @@ public class DogController {
     }
 
     // 견종 변경
-    @PatchMapping("/dogs/{changeKind}")
-    public void updateDogKind(@RequestBody Dog dog, @PathVariable String changeKind){
-        dogManagementService.updateDogKind(dog, changeKind);
+    @PatchMapping("/dogs/{name}/{ownerName}/{ownerPhoneNumber}/{changeKind}")
+    public void updateDogKind(@PathVariable String name, @PathVariable String ownerName, @PathVariable String ownerPhoneNumber,  @PathVariable String changeKind){
+        dogManagementService.updateDogKind(name, ownerName, ownerPhoneNumber, changeKind);
     }
 
 

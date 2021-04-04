@@ -49,7 +49,7 @@ public class DogManagementService {
     }
 
     // 견종 변경
-    public void updateDogKind(Dog dog, String changeKind){
-        dogRepository.updateDogKind(dog, changeKind);
+    public void updateDogKind(String name, String ownerName, String ownerPhoneNumber, String changeKind){
+        dogRepository.updateDogKind(name, ownerName, ownerPhoneNumber, changeKind);
     }
 }
