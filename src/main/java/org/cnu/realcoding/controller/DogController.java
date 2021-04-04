@@ -25,7 +25,7 @@ public class DogController {
         return dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber);
     }
 
-    @GetMapping("/dogs/{ownerPhoneNumber")
+    @GetMapping("/dogs/{ownerPhoneNumber}")
     public Dog getDogByPhoneNum(@RequestParam String PhoneNum) {
         return dogManagementService.getDogByPhoneNum(PhoneNum);
     }

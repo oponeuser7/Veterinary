@@ -31,11 +31,13 @@ public class DogManagementService {
         }
     }
     public Dog getDogByPhoneNum(String PhoneNum) {
+        if(dogRepository.getDogByPhoneNum(PhoneNum) == null)
+            throw new DogNotFoundException();
         return dogRepository.getDogByPhoneNum(PhoneNum);
     }
 
     public void addMedicalRecord(Dog dog, String medicalRecord) {
-        if(dogRepository.check_Exist(dog.getName(), dog.getOwnerName(), dog.getOwnerPhoneNumber())) {
+        if(!dogRepository.check_Exist(dog.getName(), dog.getOwnerName(), dog.getOwnerPhoneNumber())) {
             throw new DogNotFoundException();
         }
         else {
