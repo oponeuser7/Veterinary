@@ -21,6 +21,7 @@ public class DogRepository {
         ctr.is(ownerName);
         Query query = new Query(ctr);
         return mongoTemplate.find(query, Dog.class);
+    }
 
     // 이름 조회
     public List<Dog> getDogByName(String name){
