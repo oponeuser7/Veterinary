@@ -1,7 +1,10 @@
 package org.cnu.realcoding.domain;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class Dog {
     private String name;
     private String kine;
