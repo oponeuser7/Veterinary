@@ -30,7 +30,7 @@ public class DogManagementService {
     }
 
     public void insertDog(Dog dog) {
-        if(dogRepository.check_Exist(dog)){
+        if(dogRepository.check_Exist(dog.getName(), dog.getOwnerName(), dog.getOwnerPhoneNumber())){
             throw new DogAlreadyExistsException();
         }else{
             dogRepository.postDogs(dog);
@@ -39,14 +39,25 @@ public class DogManagementService {
 
     public Dog getDogByAllKey(String name, String ownerName, String ownerPhoneNumber){
         Dog mongo_dog = dogRepository.getDogByAllKey(name, ownerName, ownerPhoneNumber);
-        if(mongo_dog != null) {
-            return mongo_dog;
-        }else {
+        if(dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
             throw new DogNotFoundException();
+        }else {
+            return mongo_dog;
         }
     }
-    public Dog getDogByPhoneNum(String PhoneNum){
+    public Dog getDogByPhoneNum(String PhoneNum) {
+        if(dogRepository.getDogByPhoneNum(PhoneNum) == null)
+            throw new DogNotFoundException();
         return dogRepository.getDogByPhoneNum(PhoneNum);
     }
 
+    public void addMedicalRecord(Dog dog, String medicalRecord) {
+        if(!dogRepository.check_Exist(dog.getName(), dog.getOwnerName(), dog.getOwnerPhoneNumber())) {
+            throw new DogNotFoundException();
+        }
+        else {
+            dog.getMedicalRecords().add(medicalRecord);
+            dogRepository.addMedicalRecord(dog, dog.getMedicalRecords());
+        }
+    }
 }
