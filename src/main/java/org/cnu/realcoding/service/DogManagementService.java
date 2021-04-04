@@ -7,6 +7,8 @@ import org.cnu.realcoding.repository.DogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class DogManagementService {
@@ -19,6 +21,25 @@ public class DogManagementService {
             throw new DogAlreadyExistsException();
         }else{
             dogRepository.postDogs(dog);
+        }
+    }
+
+    // 이름 조회
+    public List<Dog> getDogByName(String name){
+        List<Dog> mongo_dog = dogRepository.getDogByName(name);
+        if(mongo_dog != null) {
+            return mongo_dog;
+        }else {
+            throw new DogNotFoundException();
+        }
+    }
+
+    // 견종 변경
+    public void updateDogKind(String name, String ownerName, String ownerPhoneNumber, String changeKind){
+        if(dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
+            dogRepository.updateDogKind(name, ownerName, ownerPhoneNumber, changeKind);
+        } else {
+            throw new DogNotFoundException();
         }
     }
 

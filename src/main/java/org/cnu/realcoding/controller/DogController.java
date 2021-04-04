@@ -18,7 +18,7 @@ public class DogController {
         dogManagementService.insertDog(dog);
     }
 
-    @GetMapping("dogs{name}/{ownerName}/{ownerPhoneNumber}")
+    @GetMapping("/dogs{name}/{ownerName}/{ownerPhoneNumber}")
     public Dog getDogByAllKey(@PathVariable String name,
                               @PathVariable String ownerName,
                               @PathVariable String ownerPhoneNumber){
@@ -26,17 +26,30 @@ public class DogController {
     }
 
     @GetMapping("/dogs/{ownerPhoneNumber}")
-    public Dog getDogByPhoneNum(@RequestParam String PhoneNum) {
+    public Dog getDogByPhoneNum(@PathVariable String PhoneNum) {
         return dogManagementService.getDogByPhoneNum(PhoneNum);
     }
 
-    @PatchMapping
+    @PatchMapping("/dogs/{name}/{ownerName}/{ownerPhoneNumber}/{medicalRecord}")
     public void addMedicalRecord(@PathVariable String name,
                                  @PathVariable String ownerName,
                                  @PathVariable String ownerPhoneNumber,
                                  @PathVariable String medicalRecord) {
         dogManagementService.addMedicalRecord(dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber), medicalRecord);
     }
+
+    // 이름 조회
+    @GetMapping("/dogs/{name}")
+    public List<Dog> getDogByName(@PathVariable String name){
+        return dogManagementService.getDogByName(name);
+    }
+
+    // 견종 변경
+    @PatchMapping("/dogs/{name}/{ownerName}/{ownerPhoneNumber}/{changeKind}")
+    public void updateDogKind(@PathVariable String name, @PathVariable String ownerName, @PathVariable String ownerPhoneNumber,  @PathVariable String changeKind){
+        dogManagementService.updateDogKind(name, ownerName, ownerPhoneNumber, changeKind);
+    }
+
 
 }
 
