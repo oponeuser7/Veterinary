@@ -33,10 +33,10 @@ public class DogRepository {
         return mongoTemplate.exists(query, Dog.class);
     }
 
-    public Dog getDogByAllKey(Dog dog) {
+    public Dog getDogByAllKey(String name, String ownerName, String ownerPhoneNumber) {
         Criteria criteria = new Criteria("name");
-        criteria.is(dog.getName()).and("ownerName").is(dog.getOwnerName())
-                .and("ownerPhoneNumber").is(dog.getOwnerPhoneNumber());
+        criteria.is(name).and("ownerName").is(ownerName)
+                .and("ownerPhoneNumber").is(ownerPhoneNumber);
         Query query = new Query(criteria);
 
         return mongoTemplate.findOne(query, Dog.class);

@@ -16,19 +16,17 @@ public class DogManagementService {
 
     public void insertDog(Dog dog) {
         if(dogRepository.check_Exist(dog)){
-            System.out.println("이미 존재하는 강아지입니다.");
             throw new DogAlreadyExistsException();
         }else{
             dogRepository.postDogs(dog);
         }
     }
 
-    public Dog getDogByAllKey(Dog dog){
-        Dog mongo_dog = dogRepository.getDogByAllKey(dog);
+    public Dog getDogByAllKey(String name, String ownerName, String ownerPhoneNumber){
+        Dog mongo_dog = dogRepository.getDogByAllKey(name, ownerName, ownerPhoneNumber);
         if(mongo_dog != null) {
             return mongo_dog;
         }else {
-            System.out.println("존재하지 않는 강아지입니다. ");
             throw new DogNotFoundException();
         }
     }
