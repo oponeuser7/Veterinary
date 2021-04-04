@@ -37,6 +37,25 @@ public class DogManagementService {
         }
     }
 
+    // 이름 조회
+    public List<Dog> getDogByName(String name){
+        List<Dog> mongo_dog = dogRepository.getDogByName(name);
+        if(mongo_dog != null) {
+            return mongo_dog;
+        }else {
+            throw new DogNotFoundException();
+        }
+    }
+
+    // 견종 변경
+    public void updateDogKind(String name, String ownerName, String ownerPhoneNumber, String changeKind){
+        if(dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
+            dogRepository.updateDogKind(name, ownerName, ownerPhoneNumber, changeKind);
+        } else {
+            throw new DogNotFoundException();
+        }
+    }
+
     public Dog getDogByAllKey(String name, String ownerName, String ownerPhoneNumber){
         Dog mongo_dog = dogRepository.getDogByAllKey(name, ownerName, ownerPhoneNumber);
         if(!dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {

@@ -21,6 +21,22 @@ public class DogRepository {
         ctr.is(ownerName);
         Query query = new Query(ctr);
         return mongoTemplate.find(query, Dog.class);
+
+    // 이름 조회
+    public List<Dog> getDogByName(String name){
+        Criteria criteria = new Criteria("name");
+        criteria.is(name);
+        Query q = new Query(criteria);
+        return mongoTemplate.find(q, Dog.class);
+    }
+    // 견종 변경
+    public void updateDogKind(String name, String ownerName, String ownerPhoneNumber, String changeKind){
+        Criteria criteria = new Criteria("name");
+        criteria.is(name).and("ownerName").is(ownerName).and("ownerPhoneNumber").is(ownerPhoneNumber);
+        Query q = new Query(criteria);
+        Update update = new Update();
+        update.set("Kind", changeKind);
+        mongoTemplate.updateFirst(q, update, Dog.class);
     }
 
     public Dog getDogByPhoneNum(String phoneNum) {
