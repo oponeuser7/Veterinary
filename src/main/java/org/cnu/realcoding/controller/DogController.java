@@ -24,6 +24,18 @@ public class DogController {
                               @PathVariable String ownerPhoneNumber){
         return dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber);
     }
+    // 이름 조회
+    @GetMapping("/dogs/{name}")
+    public List<Dog> getDogByName(@PathVariable String name){
+        return dogManagementService.getDogByName(name);
+    }
+
+    // 견종 변경
+    @PatchMapping("/dogs/{changeKind}")
+    public void updateDogKind(@RequestBody Dog dog, @PathVariable String changeKind){
+        dogManagementService.updateDogKind(dog, changeKind);
+    }
+
 
 }
 

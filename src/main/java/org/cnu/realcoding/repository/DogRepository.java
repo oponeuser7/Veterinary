@@ -6,13 +6,24 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class DogRepository {
     
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    // 이름 조회
+    public List<Dog> getDogByName(String name){
+        Criteria criteria = new Criteria("name");
+        criteria.is(name);
+        Query q = new Query(criteria);
+        return mongoTemplate.find(q, Dog.class);
+    }
 
     public Dog getDogByPhoneNum(String phoneNum) {
         Criteria ctr = new Criteria("ownerPhoneNumber");
@@ -42,4 +53,13 @@ public class DogRepository {
         return mongoTemplate.findOne(query, Dog.class);
     }
 
+    // 견종 변경
+    public void updateDogKind(Dog dog, String changeKind){
+        Criteria criteria = new Criteria("name");
+        criteria.is(dog.getName());
+        Query q = new Query(criteria);
+        Update update = new Update();
+        update.set("Kind", dog.getKine());
+        mongoTemplate.updateFirst(q, update, changeKind);
+    }
 }
