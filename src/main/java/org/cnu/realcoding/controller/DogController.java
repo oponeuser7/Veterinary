@@ -37,5 +37,18 @@ public class DogController {
     }
 
 
+    @GetMapping("/dogs/{ownerPhoneNumber}")
+    public Dog getDogByPhoneNum(@RequestParam String PhoneNum) {
+        return dogManagementService.getDogByPhoneNum(PhoneNum);
+    }
+
+    @PatchMapping
+    public void addMedicalRecord(@PathVariable String name,
+                                 @PathVariable String ownerName,
+                                 @PathVariable String ownerPhoneNumber,
+                                 @PathVariable String medicalRecord) {
+        dogManagementService.addMedicalRecord(dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber), medicalRecord);
+    }
+
 }
 
