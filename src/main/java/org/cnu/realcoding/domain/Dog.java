@@ -1,13 +1,11 @@
 package org.cnu.realcoding.domain;
 
+import lombok.Data;
+
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-//import lombok.Getter;
-//import lombok.Setter;
-//@Getter
-//@Setter
 
 @Data
 @NoArgsConstructor

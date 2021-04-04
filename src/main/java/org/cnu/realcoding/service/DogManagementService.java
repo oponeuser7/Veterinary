@@ -1,5 +1,6 @@
 package org.cnu.realcoding.service;
 
+import org.cnu.realcoding.domain.Dog;
 import lombok.Getter;
 import org.cnu.realcoding.controller.DogController;
 import org.cnu.realcoding.domain.Dog;
@@ -15,6 +16,12 @@ import java.util.List;
 public class DogManagementService {
 
     @Autowired
+    private DogRepository dogrepo;
+
+    public Dog getDogByPhoneNum(String PhoneNum){
+        return dogrepo.getDogByPhoneNum(PhoneNum);
+    }
+
     private DogRepository dogRepository;
 
     public List<Dog> getNameDogs(String name) {
@@ -35,9 +42,4 @@ public class DogManagementService {
 
         throw new DogNotFoundException();
     }
-
-
-
-
-
 }
