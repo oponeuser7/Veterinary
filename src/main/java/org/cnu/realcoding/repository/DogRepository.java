@@ -49,4 +49,12 @@ public class DogRepository {
         return mongoTemplate.findOne(query, Dog.class);
     }
 
+    public void putDogRPST(Dog d) {
+        Criteria crt = new Criteria("name").is(d.getName())
+                .and("ownerName").is(d.getOwnerName())
+                .and("ownerPhoneNumber").is(d.getOwnerPhoneNumber());
+        Query query = new Query(crt);
+        mongoTemplate.remove(query, Dog.class);
+        mongoTemplate.insert(d);
+    }
 }
