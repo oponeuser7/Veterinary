@@ -8,10 +8,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import lombok.Data;
-
-import java.util.List;
-
 @Repository
 public class DogRepository {
     
@@ -26,25 +22,24 @@ public class DogRepository {
     }
 
     public void postDogs(Dog dog) {
-        if(check_exist(getDogByKey(dog))) {
-            mongoTemplate.insert(dog);
-        }
+        mongoTemplate.insert(dog);
     }
 
-    public Dog getDogByKey(Dog dog) {
+    public boolean check_Exist(Dog dog){
         Criteria criteria = new Criteria("name");
         criteria.is(dog.getName()).and("ownerName").is(dog.getOwnerName())
                 .and("ownerPhoneNumber").is(dog.getOwnerPhoneNumber());
+        Query query = new Query(criteria);
+        return mongoTemplate.exists(query, Dog.class);
+    }
+
+    public Dog getDogByAllKey(String name, String ownerName, String ownerPhoneNumber) {
+        Criteria criteria = new Criteria("name");
+        criteria.is(name).and("ownerName").is(ownerName)
+                .and("ownerPhoneNumber").is(ownerPhoneNumber);
         Query query = new Query(criteria);
 
         return mongoTemplate.findOne(query, Dog.class);
     }
 
-    public boolean check_exist(Dog dog){
-        if(dog == null){
-            return false;
-        }else {
-            return true;
-        }
-    }
 }

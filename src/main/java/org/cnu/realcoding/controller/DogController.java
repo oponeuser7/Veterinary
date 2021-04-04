@@ -14,26 +14,16 @@ public class DogController {
     private DogManagementService dogManagementService;
 
     @PostMapping("/dogs")
-    public void creatDogs(@RequestBody Dog dog){
+    public void creatDogs(@RequestBody Dog dog) {
         dogManagementService.insertDog(dog);
     }
 
-    @GetMapping("/dogs")
-    public List<Dog> getAllDogs(){
-
-        return dogManagementService.getDogs();
-    }
-    @GetMapping("/dogs")
-    public List<Dog> getNameDogs(String name){
-
-        return dogManagementService.getNameDogs(name);
+    @GetMapping("dogs{name}/{ownerName}/{ownerPhoneNumber}")
+    public Dog getDogByAllKey(@PathVariable String name,
+                              @PathVariable String ownerName,
+                              @PathVariable String ownerPhoneNumber){
+        return dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber);
     }
 
-    // localhost:8009/dogs?name=ian
-    // localhost:8009/dogs/ian
-    // @GetMapping("/dogs{name}")
-    @GetMapping("/dogs")
-    public Dog getDogByName(@RequestParam String name){
-        return dogManagementService.getDogByName(name);
-    }
 }
+
