@@ -1,4 +1,8 @@
 package org.cnu.realcoding.exception;
 
-public class DogNotFoundException {
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class DogNotFoundException extends RuntimeException{
 }
