@@ -13,26 +13,26 @@ public class DogController {
     @Autowired
     private DogManagementService dogManagementService;
 
+    // 강아지 등록
     @PostMapping("/dogs")
     public void creatDogs(@RequestBody Dog dog) {
         dogManagementService.insertDog(dog);
     }
 
-
     // 이름 조회
-    @GetMapping("/dogs")
+    @GetMapping("/dogs/name")
     public List<Dog> getDogByName(@RequestParam String name){
         return dogManagementService.getDogByName(name);
     }
 
     // 주인 이름 조회
-    @GetMapping("/dogs/{ownerName}")
-    public List<Dog> getDogByOwnerCNTR(@PathVariable String ownerName) {
+    @GetMapping("/dogs/owner-name")
+    public List<Dog> getDogByOwnerCNTR(@RequestParam String ownerName) {
         return dogManagementService.getDogByOwnerSRVC(ownerName);
     }
 
     // 폰 넘버 조회
-    @GetMapping
+    @GetMapping("/dogs/owner-phone-number")
     public List<Dog> getDogByPhoneNum(@RequestParam String PhoneNum) {
         return dogManagementService.getDogByPhoneNum(PhoneNum);
     }
@@ -45,23 +45,27 @@ public class DogController {
         return dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber);
     }
 
+    // 강아지 덮어쓰기
     @PutMapping("/dogs")
     public void putDogCNTR(@RequestBody Dog dog) {
         dogManagementService.putDogSRVC(dog);
     }
 
-
-    @PatchMapping
-    public void addMedicalRecord(@RequestParam String name,
-                                 @RequestParam String ownerName,
-                                 @RequestParam String ownerPhoneNumber,
-                                 @RequestParam String medicalRecord) {
+    //진료기록 추가
+    @PatchMapping("dogs/medical-records/{name}/{ownerName}/{ownerPhoneNumber}/{medicalRecord}")
+    public void addMedicalRecord(@PathVariable String name,
+                                 @PathVariable String ownerName,
+                                 @PathVariable String ownerPhoneNumber,
+                                 @PathVariable String medicalRecord) {
         dogManagementService.addMedicalRecord(dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber), medicalRecord);
     }
 
     // 견종 변경
-    @PatchMapping("/dogs/{name}/{ownerName}/{ownerPhoneNumber}/{changeKind}")
-    public void updateDogKind(@PathVariable String name, @PathVariable String ownerName, @PathVariable String ownerPhoneNumber,  @PathVariable String changeKind){
+    @PatchMapping("/dogs/kind/{name}/{ownerName}/{ownerPhoneNumber}/{changeKind}")
+    public void updateDogKind(@PathVariable String name,
+                              @PathVariable String ownerName,
+                              @PathVariable String ownerPhoneNumber,
+                              @PathVariable String changeKind){
         dogManagementService.updateDogKind(name, ownerName, ownerPhoneNumber, changeKind);
     }
 
