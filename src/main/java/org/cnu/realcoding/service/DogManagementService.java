@@ -1,6 +1,7 @@
 package org.cnu.realcoding.service;
 
 import org.cnu.realcoding.domain.Dog;
+import org.cnu.realcoding.exception.ChangeMedicalRecordException;
 import org.cnu.realcoding.exception.DogAlreadyExistsException;
 import org.cnu.realcoding.exception.DogNotFoundException;
 import org.cnu.realcoding.repository.DogRepository;
@@ -25,8 +26,11 @@ public class DogManagementService {
                            Dog dog) {
         if(dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
             Dog oldDog = dogRepository.getDogByAllKey(name, ownerName, ownerPhoneNumber);
-            dog.setMedicalRecords(oldDog.getMedicalRecords());
-            dogRepository.putDogRPST(name, ownerName, ownerPhoneNumber, dog);
+            if(!(dog.getMedicalRecords().equals(oldDog.getMedicalRecords()))) {
+                throw new ChangeMedicalRecordException();
+            } else {
+                dogRepository.putDogRPST(name, ownerName, ownerPhoneNumber, dog);
+            }
         } else {
             throw new DogNotFoundException();
         }

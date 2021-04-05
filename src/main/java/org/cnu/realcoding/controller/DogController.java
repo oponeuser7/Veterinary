@@ -49,7 +49,7 @@ public class DogController {
 
     //---------------------------------------------------------------------------------------------------------
     // 강아지 덮어쓰기
-    @PutMapping("/dogs")
+    @PutMapping("/dogs/{name}/{ownerName}/{ownerPhoneNumber}")
     public void putDogCNTR(@PathVariable String name,
                            @PathVariable String ownerName,
                            @PathVariable String ownerPhoneNumber,
