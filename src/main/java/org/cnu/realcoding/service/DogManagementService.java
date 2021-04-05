@@ -49,7 +49,7 @@ public class DogManagementService {
 
     // 견종 변경
     public void updateDogKind(String name, String ownerName, String ownerPhoneNumber, String changeKind){
-        if(dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
+        if(!dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
             throw new DogNotFoundException();
         } else {
             dogRepository.updateDogKind(name, ownerName, ownerPhoneNumber, changeKind);
