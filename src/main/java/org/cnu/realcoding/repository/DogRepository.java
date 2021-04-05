@@ -77,10 +77,13 @@ public class DogRepository {
         return mongoTemplate.findOne(query, Dog.class);
     }
 
-    public void putDogRPST(Dog d) {
-        Criteria criteria = new Criteria("name").is(d.getName())
-                .and("ownerName").is(d.getOwnerName())
-                .and("ownerPhoneNumber").is(d.getOwnerPhoneNumber());
+    public void putDogRPST(String name,
+                           String ownerName,
+                           String ownerPhoneNumber,
+                           Dog d) {
+        Criteria criteria = new Criteria("name").is(name)
+                .and("ownerName").is(ownerName)
+                .and("ownerPhoneNumber").is(ownerPhoneNumber);
         Query query = new Query(criteria);
         mongoTemplate.remove(query, Dog.class);
         mongoTemplate.insert(d);

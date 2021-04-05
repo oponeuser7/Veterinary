@@ -19,6 +19,7 @@ public class DogController {
         dogManagementService.insertDog(dog);
     }
 
+    //---------------------------------------------------------------------------------------------------------
     // 이름 조회
     @GetMapping("/dogs/name")
     public List<Dog> getDogByName(@RequestParam String name){
@@ -45,12 +46,17 @@ public class DogController {
         return dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber);
     }
 
+    //---------------------------------------------------------------------------------------------------------
     // 강아지 덮어쓰기
-    @PutMapping("/dogs")
-    public void putDogCNTR(@RequestBody Dog dog) {
-        dogManagementService.putDogSRVC(dog);
+    @PutMapping("/dogs/{name}/{ownerName}/{ownerPhoneNumber}")
+    public void putDogCNTR(@PathVariable String name,
+                           @PathVariable String ownerName,
+                           @PathVariable String ownerPhoneNumber,
+                           @RequestBody Dog dog) {
+        dogManagementService.putDogSRVC(name, ownerName, ownerPhoneNumber, dog);
     }
 
+    //---------------------------------------------------------------------------------------------------------
     //진료기록 추가
     @PatchMapping("dogs/medical-records/{name}/{ownerName}/{ownerPhoneNumber}/{medicalRecord}")
     public void addMedicalRecord(@PathVariable String name,
@@ -68,7 +74,4 @@ public class DogController {
                               @PathVariable String changeKind){
         dogManagementService.updateDogKind(name, ownerName, ownerPhoneNumber, changeKind);
     }
-
-
 }
-
