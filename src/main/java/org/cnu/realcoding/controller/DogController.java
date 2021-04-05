@@ -13,13 +13,17 @@ public class DogController {
     @Autowired
     private DogManagementService dogManagementService;
 
+    // post ---------------------------------------------------------------------------------------------------------
+
     // 강아지 등록
     @PostMapping("/dogs")
     public void creatDogs(@RequestBody Dog dog) {
         dogManagementService.insertDog(dog);
     }
 
-    //---------------------------------------------------------------------------------------------------------
+
+    // get ---------------------------------------------------------------------------------------------------------
+
     // 이름 조회
     @GetMapping("/dogs/name")
     public List<Dog> getDogByName(@RequestParam String name){
@@ -46,7 +50,9 @@ public class DogController {
         return dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber);
     }
 
-    //---------------------------------------------------------------------------------------------------------
+
+    // put ---------------------------------------------------------------------------------------------------------
+
     // 강아지 덮어쓰기
     @PutMapping("/dogs/{name}/{ownerName}/{ownerPhoneNumber}")
     public void putDogCNTR(@PathVariable String name,
@@ -56,8 +62,10 @@ public class DogController {
         dogManagementService.putDogSRVC(name, ownerName, ownerPhoneNumber, dog);
     }
 
-    //---------------------------------------------------------------------------------------------------------
-    //진료기록 추가
+
+    // patch ---------------------------------------------------------------------------------------------------------
+
+    // 진료기록 추가
     @PatchMapping("dogs/medical-records/{name}/{ownerName}/{ownerPhoneNumber}/{medicalRecord}")
     public void addMedicalRecord(@PathVariable String name,
                                  @PathVariable String ownerName,
