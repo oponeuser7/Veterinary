@@ -40,11 +40,11 @@ public class DogRepository {
         mongoTemplate.updateFirst(q, update, Dog.class);
     }
 
-    public Dog getDogByPhoneNum(String phoneNum) {
+    public List<Dog> getDogByPhoneNum(String phoneNum) {
         Criteria criteria = new Criteria("ownerPhoneNumber");
         criteria.is(phoneNum);
         Query q = new Query(criteria);
-        return mongoTemplate.findOne(q, Dog.class);
+        return mongoTemplate.find(q, Dog.class);
     }
 
     public void postDogs(Dog dog) {
