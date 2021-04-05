@@ -10,16 +10,67 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 public class DogManagementService {
 
     @Autowired
     private DogRepository dogRepository;
 
+    // post ---------------------------------------------------------------------------------------------------------
+
+    // 강아지 등록
+    public void insertDog(Dog dog) {
+        if(dogRepository.check_Exist(dog.getName(), dog.getOwnerName(), dog.getOwnerPhoneNumber())){
+            throw new DogAlreadyExistsException();
+        }else{
+            dogRepository.postDogs(dog);
+        }
+    }
+
+
+    // get---------------------------------------------------------------------------------------------------------
+
+    // 이름 조회
+    public List<Dog> getDogByName(String name){
+        List<Dog> mongo_dog = dogRepository.getDogByName(name);
+        if(mongo_dog.size() > 0) {
+            return mongo_dog;
+        }else {
+            throw new DogNotFoundException();
+        }
+    }
+
+    // 주인 이름 조회
     public List<Dog> getDogByOwnerSRVC(String ownerName) {
         return dogRepository.getDogByOwnerRPST(ownerName);
     }
 
+    // 폰 넘버 조회
+    public List<Dog> getDogByPhoneNum(String PhoneNum) {
+        List<Dog> mongo_dog = dogRepository.getDogByPhoneNum(PhoneNum);
+        if(mongo_dog.size() > 0){
+            return mongo_dog;
+        }
+        else{
+            throw new DogNotFoundException();
+        }
+    }
+
+    // allkey 조회
+    public Dog getDogByAllKey(String name, String ownerName, String ownerPhoneNumber){
+        Dog mongo_dog = dogRepository.getDogByAllKey(name, ownerName, ownerPhoneNumber);
+        if(dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
+            throw new DogNotFoundException();
+        }else {
+            return mongo_dog;
+        }
+    }
+
+
+    // put--------------------------------------------------------------------------------------------------------
+
+    // 강아지 덮어쓰기
     public void putDogSRVC(String name,
                            String ownerName,
                            String ownerPhoneNumber,
@@ -36,21 +87,17 @@ public class DogManagementService {
         }
     }
 
-    public void insertDog(Dog dog) {
-        if(dogRepository.check_Exist(dog.getName(), dog.getOwnerName(), dog.getOwnerPhoneNumber())){
-            throw new DogAlreadyExistsException();
-        }else{
-            dogRepository.postDogs(dog);
-        }
-    }
 
-    // 이름 조회
-    public List<Dog> getDogByName(String name){
-        List<Dog> mongo_dog = dogRepository.getDogByName(name);
-        if(mongo_dog.size() > 0) {
-            return mongo_dog;
-        }else {
+    // patch ---------------------------------------------------------------------------------------------------------
+
+    // 진료기록 추가
+    public void addMedicalRecord(Dog dog, String medicalRecord) {
+        if(!dogRepository.check_Exist(dog.getName(), dog.getOwnerName(), dog.getOwnerPhoneNumber())) {
             throw new DogNotFoundException();
+        }
+        else {
+            dog.getMedicalRecords().add(medicalRecord);
+            dogRepository.addMedicalRecord(dog, dog.getMedicalRecords());
         }
     }
 
@@ -60,34 +107,6 @@ public class DogManagementService {
             throw new DogNotFoundException();
         } else {
             dogRepository.updateDogKind(name, ownerName, ownerPhoneNumber, changeKind);
-        }
-    }
-
-    public Dog getDogByAllKey(String name, String ownerName, String ownerPhoneNumber){
-        Dog mongo_dog = dogRepository.getDogByAllKey(name, ownerName, ownerPhoneNumber);
-        if(!dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
-            throw new DogNotFoundException();
-        }else {
-            return mongo_dog;
-        }
-    }
-    public List<Dog> getDogByPhoneNum(String PhoneNum) {
-        List<Dog> mongo_dog = dogRepository.getDogByPhoneNum(PhoneNum);
-        if(mongo_dog.size() > 0){
-            return mongo_dog;
-        }
-        else{
-            throw new DogNotFoundException();
-        }
-    }
-
-    public void addMedicalRecord(Dog dog, String medicalRecord) {
-        if(!dogRepository.check_Exist(dog.getName(), dog.getOwnerName(), dog.getOwnerPhoneNumber())) {
-            throw new DogNotFoundException();
-        }
-        else {
-            dog.getMedicalRecords().add(medicalRecord);
-            dogRepository.addMedicalRecord(dog, dog.getMedicalRecords());
         }
     }
 }
