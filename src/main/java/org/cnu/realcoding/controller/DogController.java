@@ -13,21 +13,31 @@ public class DogController {
     @Autowired
     private DogManagementService dogManagementService;
 
-    @GetMapping("/dogs/owners/{ownerName}")
-    public List<Dog> getDogByOwnerCNTR(@PathVariable(name = "ownerName") String ownerName) {
-        return dogManagementService.getDogByOwnerSRVC(ownerName);
-    }
-
-    @PutMapping("/dogs")
-    public void putDogCNTR(@RequestBody Dog dog) {
-        dogManagementService.putDogSRVC(dog);
-    }
-
     @PostMapping("/dogs")
     public void creatDogs(@RequestBody Dog dog) {
         dogManagementService.insertDog(dog);
     }
 
+
+    // 이름 조회
+    @GetMapping("/dogs")
+    public List<Dog> getDogByName(@RequestParam String name){
+        return dogManagementService.getDogByName(name);
+    }
+
+    // 주인 이름 조회
+    @GetMapping("/dogs/{ownerName}")
+    public List<Dog> getDogByOwnerCNTR(@PathVariable String ownerName) {
+        return dogManagementService.getDogByOwnerSRVC(ownerName);
+    }
+
+    // 폰 넘버 조회
+    @GetMapping
+    public List<Dog> getDogByPhoneNum(@RequestParam String PhoneNum) {
+        return dogManagementService.getDogByPhoneNum(PhoneNum);
+    }
+
+    // allkey 조회
     @GetMapping("/dogs/{name}/{ownerName}/{ownerPhoneNumber}")
     public Dog getDogByAllKey(@PathVariable String name,
                               @PathVariable String ownerName,
@@ -35,10 +45,11 @@ public class DogController {
         return dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber);
     }
 
-    @GetMapping
-    public Dog getDogByPhoneNum(@RequestParam String PhoneNum) {
-        return dogManagementService.getDogByPhoneNum(PhoneNum);
+    @PutMapping("/dogs")
+    public void putDogCNTR(@RequestBody Dog dog) {
+        dogManagementService.putDogSRVC(dog);
     }
+
 
     @PatchMapping
     public void addMedicalRecord(@RequestParam String name,
@@ -47,13 +58,7 @@ public class DogController {
                                  @RequestParam String medicalRecord) {
         dogManagementService.addMedicalRecord(dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber), medicalRecord);
     }
-
-    // 이름 조회
-    @GetMapping("/dogs/names/{name}")
-    public List<Dog> getDogByName(@PathVariable(name = "name") String name){
-        return dogManagementService.getDogByName(name);
-    }
-
+    
     // 견종 변경
     @PatchMapping("/dogs/{name}/{ownerName}/{ownerPhoneNumber}/{changeKind}")
     public void updateDogKind(@PathVariable String name, @PathVariable String ownerName, @PathVariable String ownerPhoneNumber,  @PathVariable String changeKind) {

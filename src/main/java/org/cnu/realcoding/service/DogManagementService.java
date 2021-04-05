@@ -40,7 +40,7 @@ public class DogManagementService {
     // 이름 조회
     public List<Dog> getDogByName(String name){
         List<Dog> mongo_dog = dogRepository.getDogByName(name);
-        if(mongo_dog != null) {
+        if(mongo_dog.size() > 0) {
             return mongo_dog;
         }else {
             throw new DogNotFoundException();
@@ -49,10 +49,10 @@ public class DogManagementService {
 
     // 견종 변경
     public void updateDogKind(String name, String ownerName, String ownerPhoneNumber, String changeKind){
-        if(dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
-            dogRepository.updateDogKind(name, ownerName, ownerPhoneNumber, changeKind);
-        } else {
+        if(!dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
             throw new DogNotFoundException();
+        } else {
+            dogRepository.updateDogKind(name, ownerName, ownerPhoneNumber, changeKind);
         }
     }
 
@@ -64,10 +64,14 @@ public class DogManagementService {
             return mongo_dog;
         }
     }
-    public Dog getDogByPhoneNum(String PhoneNum) {
-        if(dogRepository.getDogByPhoneNum(PhoneNum) == null)
+    public List<Dog> getDogByPhoneNum(String PhoneNum) {
+        List<Dog> mongo_dog = dogRepository.getDogByPhoneNum(PhoneNum);
+        if(mongo_dog.size() > 0){
+            return mongo_dog;
+        }
+        else{
             throw new DogNotFoundException();
-        return dogRepository.getDogByPhoneNum(PhoneNum);
+        }
     }
 
     public void addMedicalRecord(Dog dog, String medicalRecord) {
