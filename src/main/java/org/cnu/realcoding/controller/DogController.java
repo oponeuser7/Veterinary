@@ -14,7 +14,7 @@ public class DogController {
     private DogManagementService dogManagementService;
 
     @GetMapping("/dogs/{ownerName}")
-    public List<Dog> getDogByOwnerCNTR(@PathVariable String ownerName) {
+    public List<Dog> getDogByOwnerCNTR(@PathVariable(name = "ownerName") String ownerName) {
         return dogManagementService.getDogByOwnerSRVC(ownerName);
     }
 
@@ -50,7 +50,7 @@ public class DogController {
 
     // 이름 조회
     @GetMapping("/dogs/{name}")
-    public List<Dog> getDogByName(@PathVariable String name){
+    public List<Dog> getDogByName(@PathVariable(name = "name") String name){
         return dogManagementService.getDogByName(name);
     }
 
