@@ -13,7 +13,7 @@ public class DogController {
     @Autowired
     private DogManagementService dogManagementService;
 
-    @GetMapping("/dogs/{ownerName}")
+    @GetMapping("/dogs/owners/{ownerName}")
     public List<Dog> getDogByOwnerCNTR(@PathVariable(name = "ownerName") String ownerName) {
         return dogManagementService.getDogByOwnerSRVC(ownerName);
     }
@@ -49,17 +49,14 @@ public class DogController {
     }
 
     // 이름 조회
-    @GetMapping("/dogs/{name}")
+    @GetMapping("/dogs/names/{name}")
     public List<Dog> getDogByName(@PathVariable(name = "name") String name){
         return dogManagementService.getDogByName(name);
     }
 
     // 견종 변경
     @PatchMapping("/dogs/{name}/{ownerName}/{ownerPhoneNumber}/{changeKind}")
-    public void updateDogKind(@PathVariable String name, @PathVariable String ownerName, @PathVariable String ownerPhoneNumber,  @PathVariable String changeKind){
+    public void updateDogKind(@PathVariable String name, @PathVariable String ownerName, @PathVariable String ownerPhoneNumber,  @PathVariable String changeKind) {
         dogManagementService.updateDogKind(name, ownerName, ownerPhoneNumber, changeKind);
     }
-
-
 }
-
