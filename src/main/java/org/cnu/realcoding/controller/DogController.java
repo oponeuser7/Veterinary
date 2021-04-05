@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class DogController {
@@ -17,8 +18,7 @@ public class DogController {
     public void creatDogs(@RequestBody Dog dog) {
         dogManagementService.insertDog(dog);
     }
-
-
+    //---------------------------------------------------------------------------------------------------------
     // 이름 조회
     @GetMapping("/dogs")
     public List<Dog> getDogByName(@RequestParam String name){
@@ -45,12 +45,16 @@ public class DogController {
         return dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber);
     }
 
+    //---------------------------------------------------------------------------------------------------------
     @PutMapping("/dogs")
-    public void putDogCNTR(@RequestBody Dog dog) {
-        dogManagementService.putDogSRVC(dog);
+    public void putDogCNTR(@PathVariable String name,
+                           @PathVariable String ownerName,
+                           @PathVariable String ownerPhoneNumber,
+                           @RequestBody Dog dog) {
+        dogManagementService.putDogSRVC(name, ownerName, ownerPhoneNumber, dog);
     }
 
-
+    //---------------------------------------------------------------------------------------------------------
     @PatchMapping
     public void addMedicalRecord(@RequestParam String name,
                                  @RequestParam String ownerName,
@@ -58,7 +62,7 @@ public class DogController {
                                  @RequestParam String medicalRecord) {
         dogManagementService.addMedicalRecord(dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber), medicalRecord);
     }
-    
+
     // 견종 변경
     @PatchMapping("/dogs/{name}/{ownerName}/{ownerPhoneNumber}/{changeKind}")
     public void updateDogKind(@PathVariable String name, @PathVariable String ownerName, @PathVariable String ownerPhoneNumber,  @PathVariable String changeKind) {
