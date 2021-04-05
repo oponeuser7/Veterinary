@@ -3,7 +3,6 @@ package org.cnu.realcoding.repository;
 import org.cnu.realcoding.domain.Dog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -16,6 +15,30 @@ public class DogRepository {
     
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    public List<Dog> getDogByOwnerRPST(String ownerName) {
+        Criteria ctr = new Criteria("ownerName");
+        ctr.is(ownerName);
+        Query query = new Query(ctr);
+        return mongoTemplate.find(query, Dog.class);
+    }
+
+    // 이름 조회
+    public List<Dog> getDogByName(String name){
+        Criteria criteria = new Criteria("name");
+        criteria.is(name);
+        Query q = new Query(criteria);
+        return mongoTemplate.find(q, Dog.class);
+    }
+    // 견종 변경
+    public void updateDogKind(String name, String ownerName, String ownerPhoneNumber, String changeKind){
+        Criteria criteria = new Criteria("name");
+        criteria.is(name).and("ownerName").is(ownerName).and("ownerPhoneNumber").is(ownerPhoneNumber);
+        Query q = new Query(criteria);
+        Update update = new Update();
+        update.set("Kind", changeKind);
+        mongoTemplate.updateFirst(q, update, Dog.class);
+    }
 
     public Dog getDogByPhoneNum(String phoneNum) {
         Criteria criteria = new Criteria("ownerPhoneNumber");
@@ -48,10 +71,18 @@ public class DogRepository {
 
     public Dog getDogByAllKey(String name, String ownerName, String ownerPhoneNumber) {
         Criteria criteria = new Criteria("name");
-        criteria.is(name).and("ownerName").is(ownerName)
-                .and("ownerPhoneNumber").is(ownerPhoneNumber);
+        criteria.is(name).and("ownerName").is(ownerName).and("ownerPhoneNumber").is(ownerPhoneNumber);
         Query query = new Query(criteria);
 
         return mongoTemplate.findOne(query, Dog.class);
+    }
+
+    public void putDogRPST(Dog d) {
+        Criteria criteria = new Criteria("name").is(d.getName())
+                .and("ownerName").is(d.getOwnerName())
+                .and("ownerPhoneNumber").is(d.getOwnerPhoneNumber());
+        Query query = new Query(criteria);
+        mongoTemplate.remove(query, Dog.class);
+        mongoTemplate.insert(d);
     }
 }

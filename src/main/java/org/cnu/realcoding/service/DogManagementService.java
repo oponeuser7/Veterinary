@@ -7,12 +7,27 @@ import org.cnu.realcoding.repository.DogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 @Service
 public class DogManagementService {
 
     @Autowired
     private DogRepository dogRepository;
+
+    public List<Dog> getDogByOwnerSRVC(String ownerName) {
+        return dogRepository.getDogByOwnerRPST(ownerName);
+    }
+
+    public void putDogSRVC(Dog dog) {
+        if(dogRepository.check_Exist(dog.getName(), dog.getOwnerName(), dog.getOwnerPhoneNumber())) {
+            Dog dogFromDB = dogRepository.getDogByAllKey(dog.getName(), dog.getOwnerName(), dog.getOwnerPhoneNumber());
+            dogFromDB.setKind(dog.getKind());
+            dogRepository.putDogRPST(dogFromDB);
+        } else {
+            throw new DogNotFoundException();
+        }
+    }
 
     public void insertDog(Dog dog) {
         if(dogRepository.check_Exist(dog.getName(), dog.getOwnerName(), dog.getOwnerPhoneNumber())){
@@ -22,9 +37,28 @@ public class DogManagementService {
         }
     }
 
+    // 이름 조회
+    public List<Dog> getDogByName(String name){
+        List<Dog> mongo_dog = dogRepository.getDogByName(name);
+        if(mongo_dog != null) {
+            return mongo_dog;
+        }else {
+            throw new DogNotFoundException();
+        }
+    }
+
+    // 견종 변경
+    public void updateDogKind(String name, String ownerName, String ownerPhoneNumber, String changeKind){
+        if(dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
+            dogRepository.updateDogKind(name, ownerName, ownerPhoneNumber, changeKind);
+        } else {
+            throw new DogNotFoundException();
+        }
+    }
+
     public Dog getDogByAllKey(String name, String ownerName, String ownerPhoneNumber){
         Dog mongo_dog = dogRepository.getDogByAllKey(name, ownerName, ownerPhoneNumber);
-        if(dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
+        if(!dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
             throw new DogNotFoundException();
         }else {
             return mongo_dog;
