@@ -93,9 +93,15 @@ public class DogRepository {
         criteria.is(name).and("ownerName").is(ownerName)
                 .and("ownerPhoneNumber").is(ownerPhoneNumber);
         Query query = new Query(criteria);
+        Update update = new Update();
+        List<String> exist_one = mongoTemplate.findOne(query, Dog.class).getMedicalRecords();
+
         for(String record : medicalRecord){
-            mongoTemplate.findOne(query, Dog.class).getMedicalRecords().add(record);
+            exist_one.add(record);
         }
+        update.set("medicalRecords", exist_one);
+        mongoTemplate.updateFirst(query, update, Dog.class);
+
     }
 
     // 견종 변경
