@@ -88,14 +88,20 @@ public class DogRepository {
     // patch ---------------------------------------------------------------------------------------------------------
 
     // 진료기록 추가
-    public void addMedicalRecord(Dog dog, List<String> medicalRecord) {
+    public void addMedicalRecord(String name, String ownerName, String ownerPhoneNumber, List<String> medicalRecord) {
         Criteria criteria = new Criteria("name");
-        criteria.is(dog.getName()).and("ownerName").is(dog.getOwnerName())
-                .and("ownerPhoneNumber").is(dog.getOwnerPhoneNumber());
+        criteria.is(name).and("ownerName").is(ownerName)
+                .and("ownerPhoneNumber").is(ownerPhoneNumber);
         Query query = new Query(criteria);
         Update update = new Update();
-        update.set("medicalRecords", medicalRecord);
+        List<String> exist_one = mongoTemplate.findOne(query, Dog.class).getMedicalRecords();
+
+        for(String record : medicalRecord){
+            exist_one.add(record);
+        }
+        update.set("medicalRecords", exist_one);
         mongoTemplate.updateFirst(query, update, Dog.class);
+
     }
 
     // 견종 변경

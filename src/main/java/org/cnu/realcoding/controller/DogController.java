@@ -66,12 +66,12 @@ public class DogController {
     // patch ---------------------------------------------------------------------------------------------------------
 
     // 진료기록 추가
-    @PatchMapping("dogs/medical-records/{name}/{ownerName}/{ownerPhoneNumber}/{medicalRecord}")
+    @PatchMapping("dogs/medical-records/{name}/{ownerName}/{ownerPhoneNumber}")
     public void addMedicalRecord(@PathVariable String name,
                                  @PathVariable String ownerName,
                                  @PathVariable String ownerPhoneNumber,
-                                 @PathVariable String medicalRecord) {
-        dogManagementService.addMedicalRecord(dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber), medicalRecord);
+                                 @RequestBody List<String> medicalRecord) {
+        dogManagementService.addMedicalRecord(name, ownerName, ownerPhoneNumber, medicalRecord);
     }
 
     // 견종 변경
