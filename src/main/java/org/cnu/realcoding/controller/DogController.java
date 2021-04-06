@@ -70,8 +70,8 @@ public class DogController {
     public void addMedicalRecord(@PathVariable String name,
                                  @PathVariable String ownerName,
                                  @PathVariable String ownerPhoneNumber,
-                                 @PathVariable String medicalRecord) {
-        dogManagementService.addMedicalRecord(dogManagementService.getDogByAllKey(name, ownerName, ownerPhoneNumber), medicalRecord);
+                                 @PathVariable List<String> medicalRecord) {
+        dogManagementService.addMedicalRecord(name, ownerName, ownerPhoneNumber, medicalRecord);
     }
 
     // 견종 변경

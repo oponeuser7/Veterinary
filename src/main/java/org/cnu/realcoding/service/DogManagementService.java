@@ -43,7 +43,13 @@ public class DogManagementService {
 
     // 주인 이름 조회
     public List<Dog> getDogByOwnerSRVC(String ownerName) {
-        return dogRepository.getDogByOwnerRPST(ownerName);
+        List<Dog> mongo_dog = dogRepository.getDogByOwnerRPST(ownerName);
+        if(mongo_dog.size() > 0){
+            return mongo_dog;
+        }
+        else{
+            throw new DogNotFoundException();
+        }
     }
 
     // 폰 넘버 조회
@@ -60,7 +66,7 @@ public class DogManagementService {
     // allkey 조회
     public Dog getDogByAllKey(String name, String ownerName, String ownerPhoneNumber){
         Dog mongo_dog = dogRepository.getDogByAllKey(name, ownerName, ownerPhoneNumber);
-        if(dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
+        if(!dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
             throw new DogNotFoundException();
         }else {
             return mongo_dog;
@@ -91,13 +97,12 @@ public class DogManagementService {
     // patch ---------------------------------------------------------------------------------------------------------
 
     // 진료기록 추가
-    public void addMedicalRecord(Dog dog, String medicalRecord) {
-        if(!dogRepository.check_Exist(dog.getName(), dog.getOwnerName(), dog.getOwnerPhoneNumber())) {
+    public void addMedicalRecord(String name, String ownerName, String ownerPhoneNumber, List<String> medicalRecord) {
+        if(!dogRepository.check_Exist(name, ownerName, ownerPhoneNumber)) {
             throw new DogNotFoundException();
         }
         else {
-            dog.getMedicalRecords().add(medicalRecord);
-            dogRepository.addMedicalRecord(dog, dog.getMedicalRecords());
+            dogRepository.addMedicalRecord(name, ownerName, ownerPhoneNumber, medicalRecord);
         }
     }
 
